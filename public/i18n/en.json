@@ -1,0 +1,79 @@
+{
+  "brand": {
+    "name": "Community Hub"
+  },
+  "nav": {
+    "home": "Home",
+    "news": "News",
+    "events": "Events",
+    "menu": "Menu"
+  },
+  "common": {
+    "loading": "Loading…",
+    "readMore": "Read more",
+    "skipToContent": "Skip to content"
+  },
+  "home": {
+    "eyebrow": "Welcome",
+    "fallbackTitle": "Welcome to our community",
+    "fallbackText": "News, events and opportunities — all in one place.",
+    "browseEvents": "Browse events",
+    "readNews": "Read the news",
+    "upcomingEvents": "Upcoming events",
+    "allEvents": "All events",
+    "latestNews": "Latest news",
+    "allNews": "All news",
+    "ctaTitle": "Join the community",
+    "ctaText": "Create a free account to register for events and get the latest updates."
+  },
+  "news": {
+    "title": "Latest news",
+    "intro": "Announcements, stories and updates from our team.",
+    "empty": "No news yet.",
+    "back": "← Back to news"
+  },
+  "events": {
+    "title": "Events",
+    "intro": "Conferences, workshops and meetups you can join.",
+    "upcoming": "Upcoming",
+    "pastEvents": "Past events",
+    "past": "Past",
+    "empty": "No events to show.",
+    "details": "View details",
+    "back": "← Back to events",
+    "info": "Event details",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "register": "Register now"
+  },
+  "footer": {
+    "about": "A practice site built with Umbraco as a headless CMS and Angular on the front end.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "address": "Cairo, Egypt",
+    "rights": "All rights reserved.",
+    "poweredBy": "Powered by Umbraco & Angular"
+  },
+  "auth": {
+    "loginTitle": "Log in",
+    "loginSubtitle": "Welcome back! Please enter your details.",
+    "signupTitle": "Create an account",
+    "signupSubtitle": "Join to register for events and get updates.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "loginButton": "Log in",
+    "signupButton": "Sign up",
+    "loginLink": "Log in",
+    "signupLink": "Sign up",
+    "logout": "Log out",
+    "hello": "Hello",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "nameRequired": "Please enter your name.",
+    "emailInvalid": "Please enter a valid email.",
+    "passwordRule": "Password must be at least 10 characters."
+  }
+}

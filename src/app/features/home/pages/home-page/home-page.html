@@ -1,0 +1,75 @@
+<section class="hero">
+  <div class="container hero__content">
+    <p class="eyebrow eyebrow--light">{{ 'home.eyebrow' | translate }}</p>
+    <h1>{{ home()?.properties?.title || ('home.fallbackTitle' | translate) }}</h1>
+    @if (home()?.properties?.bodyText?.markup; as body) {
+      <div class="hero__text" [innerHTML]="body"></div>
+    } @else {
+      <p class="hero__text">{{ 'home.fallbackText' | translate }}</p>
+    }
+    <div class="hero__actions">
+      <a class="btn btn--light" routerLink="/events">{{ 'home.browseEvents' | translate }}</a>
+      <a class="btn btn--outline-light" routerLink="/news">{{ 'home.readNews' | translate }}</a>
+    </div>
+  </div>
+</section>
+
+@if (error()) {
+  <div class="container section"><p class="alert alert--error">{{ error() }}</p></div>
+}
+
+<section class="container section">
+  <div class="section__head">
+    <div>
+      <p class="eyebrow">{{ 'nav.events' | translate }}</p>
+      <h2>{{ 'home.upcomingEvents' | translate }}</h2>
+    </div>
+    <a class="section__more" routerLink="/events">{{ 'home.allEvents' | translate }} <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+
+  @if (loading()) {
+    <app-card-skeleton [count]="3" />
+  } @else {
+    <div class="card-grid">
+      @for (item of upcomingEvents(); track item.id) {
+        <app-event-card [item]="item" />
+      } @empty {
+        <p class="empty-state">{{ 'events.empty' | translate }}</p>
+      }
+    </div>
+  }
+</section>
+
+<section class="section section--tinted">
+  <div class="container">
+    <div class="section__head">
+      <div>
+        <p class="eyebrow">{{ 'nav.news' | translate }}</p>
+        <h2>{{ 'home.latestNews' | translate }}</h2>
+      </div>
+      <a class="section__more" routerLink="/news">{{ 'home.allNews' | translate }} <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+
+    @if (loading()) {
+      <app-card-skeleton [count]="3" />
+    } @else {
+      <div class="card-grid">
+        @for (item of latestNews(); track item.id) {
+          <app-news-card [item]="item" />
+        } @empty {
+          <p class="empty-state">{{ 'news.empty' | translate }}</p>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<section class="container section">
+  <div class="cta">
+    <div>
+      <h2>{{ 'home.ctaTitle' | translate }}</h2>
+      <p>{{ 'home.ctaText' | translate }}</p>
+    </div>
+    <a class="btn btn--light" routerLink="/signup">{{ 'auth.signupLink' | translate }}</a>
+  </div>
+</section>

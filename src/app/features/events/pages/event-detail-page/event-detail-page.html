@@ -1,0 +1,52 @@
+@if (loading()) {
+  <div class="container section"><div class="skeleton skeleton--hero"></div></div>
+} @else if (error()) {
+  <div class="container section"><p class="alert alert--error">{{ error() }}</p></div>
+} @else if (item(); as item) {
+  <article>
+    <header class="detail-hero" [style.background-image]="item.properties.image?.[0] ? 'url(' + item.properties.image![0].url + ')' : null">
+      <div class="container detail-hero__content">
+        <a class="back-link" routerLink="/events">{{ 'events.back' | translate }}</a>
+        @if (isPast()) {
+          <span class="badge badge--muted">{{ 'events.past' | translate }}</span>
+        } @else {
+          <span class="badge">{{ 'events.upcoming' | translate }}</span>
+        }
+        <h1>{{ item.properties.title || item.name }}</h1>
+      </div>
+    </header>
+
+    <div class="container section detail-layout">
+      <div class="prose" [innerHTML]="item.properties.description?.markup"></div>
+
+      <aside class="info-panel">
+        <h2>{{ 'events.info' | translate }}</h2>
+        <dl>
+          @if (item.properties.startDate; as start) {
+            <dt>{{ 'events.date' | translate }}</dt>
+            <dd>
+              {{ start | localDate: language() : 'long' }}
+              @if (!sameDay()) {
+                <br />– {{ item.properties.endDate | localDate: language() : 'long' }}
+              }
+            </dd>
+            <dt>{{ 'events.time' | translate }}</dt>
+            <dd>
+              {{ start | localDate: language() : 'time' }}
+              @if (item.properties.endDate; as end) {
+                – {{ end | localDate: language() : 'time' }}
+              }
+            </dd>
+          }
+          @if (item.properties.location) {
+            <dt>{{ 'events.location' | translate }}</dt>
+            <dd>{{ item.properties.location }}</dd>
+          }
+        </dl>
+        @if (!isPast()) {
+          <button type="button" class="btn btn--primary btn--block">{{ 'events.register' | translate }}</button>
+        }
+      </aside>
+    </div>
+  </article>
+}

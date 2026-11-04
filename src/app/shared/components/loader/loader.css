@@ -1,0 +1,43 @@
+.loader {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 1000; /* above the sticky header */
+  height: 3px;
+  overflow: hidden;
+  background: var(--color-primary-soft);
+}
+
+.loader__bar {
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  border-radius: 999px;
+  animation: loader-slide 1.1s ease-in-out infinite;
+}
+
+/* RTL (Arabic): slide from right to left. */
+:host-context([dir='rtl']) .loader__bar {
+  animation-name: loader-slide-rtl;
+}
+
+@keyframes loader-slide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+
+@keyframes loader-slide-rtl {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-250%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__bar {
+    width: 100%;
+    animation: loader-pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes loader-pulse {
+  50% { opacity: 0.4; }
+}

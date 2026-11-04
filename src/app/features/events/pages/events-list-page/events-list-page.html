@@ -1,0 +1,30 @@
+<app-page-header
+  [eyebrow]="'nav.events' | translate"
+  [title]="page()?.properties?.title || ('events.title' | translate)"
+  [intro]="'events.intro' | translate"
+/>
+
+<section class="container section">
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'upcoming'" (click)="tab.set('upcoming')">
+      {{ 'events.upcoming' | translate }} <span class="tabs__count">{{ upcoming().length }}</span>
+    </button>
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'past'" (click)="tab.set('past')">
+      {{ 'events.pastEvents' | translate }} <span class="tabs__count">{{ past().length }}</span>
+    </button>
+  </div>
+
+  @if (loading()) {
+    <app-card-skeleton [count]="3" />
+  } @else if (error()) {
+    <p class="alert alert--error">{{ error() }}</p>
+  } @else {
+    <div class="card-grid">
+      @for (item of tab() === 'upcoming' ? upcoming() : past(); track item.id) {
+        <app-event-card [item]="item" />
+      } @empty {
+        <p class="empty-state">{{ 'events.empty' | translate }}</p>
+      }
+    </div>
+  }
+</section>

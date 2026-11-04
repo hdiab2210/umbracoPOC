@@ -1,0 +1,22 @@
+<article class="card">
+  <a class="card__media" [routerLink]="['/news', item().id]" tabindex="-1" aria-hidden="true">
+    @if (image(); as image) {
+      <img [src]="image.url" alt="" loading="lazy" />
+    }
+    <span class="badge badge--on-media">{{ 'nav.news' | translate }}</span>
+  </a>
+
+  <div class="card__body">
+    <p class="card__meta">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2zM5 9h14v11H5z"/></svg>
+      <time [attr.datetime]="item().createDate">{{ item().createDate | localDate: language() : 'medium' }}</time>
+    </p>
+    <h3 class="card__title">
+      <a [routerLink]="['/news', item().id]">{{ item().properties.title || item().name }}</a>
+    </h3>
+    <p class="card__text">{{ excerpt() }}</p>
+    <a class="card__link" [routerLink]="['/news', item().id]">
+      {{ 'common.readMore' | translate }} <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>

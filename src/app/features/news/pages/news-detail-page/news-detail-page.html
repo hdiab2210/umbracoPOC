@@ -1,0 +1,22 @@
+@if (loading()) {
+  <div class="container section"><div class="skeleton skeleton--hero"></div></div>
+} @else if (error()) {
+  <div class="container section"><p class="alert alert--error">{{ error() }}</p></div>
+} @else if (item(); as item) {
+  <article>
+    <header class="detail-hero" [style.background-image]="item.properties.image?.[0] ? 'url(' + item.properties.image![0].url + ')' : null">
+      <div class="container detail-hero__content">
+        <a class="back-link" routerLink="/news">{{ 'news.back' | translate }}</a>
+        <span class="badge">{{ 'nav.news' | translate }}</span>
+        <h1>{{ item.properties.title || item.name }}</h1>
+        <p class="detail-hero__meta">
+          <time [attr.datetime]="item.createDate">{{ item.createDate | localDate: language() : 'long' }}</time>
+        </p>
+      </div>
+    </header>
+
+    <div class="container container--narrow section">
+      <div class="prose" [innerHTML]="item.properties.description?.markup"></div>
+    </div>
+  </article>
+}

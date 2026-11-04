@@ -1,0 +1,17 @@
+{
+  "/umbraco": {
+    "target": "https://localhost:44328",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/media": {
+    "target": "https://localhost:44328",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/api": {
+    "target": "https://localhost:44328",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

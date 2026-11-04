@@ -1,0 +1,52 @@
+<article class="card" [class.card--past]="isPast()">
+  <a class="card__media" [routerLink]="['/events', item().id]" tabindex="-1" aria-hidden="true">
+    @if (image(); as image) {
+      <img [src]="image.url" alt="" loading="lazy" />
+    }
+    @if (props().startDate; as start) {
+      <span class="date-badge">
+        <span class="date-badge__day">{{ start | localDate: language() : 'day' }}</span>
+        <span class="date-badge__month">{{ start | localDate: language() : 'month' }}</span>
+      </span>
+    }
+    @if (isPast()) {
+      <span class="badge badge--muted badge--on-media">{{ 'events.past' | translate }}</span>
+    }
+  </a>
+
+  <div class="card__body">
+    <h3 class="card__title">
+      <a [routerLink]="['/events', item().id]">{{ props().title || item().name }}</a>
+    </h3>
+
+    <ul class="meta-list">
+      @if (props().startDate; as start) {
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m1 5v5.4l3.6 2.1-1 1.7L11 13.6V7z"/></svg>
+          <span>
+            @if (sameDay()) {
+              {{ start | localDate: language() : 'medium' }} ·
+              {{ start | localDate: language() : 'time' }}
+              @if (props().endDate; as end) {
+                – {{ end | localDate: language() : 'time' }}
+              }
+            } @else {
+              {{ start | localDate: language() : 'medium' }} – {{ props().endDate | localDate: language() : 'medium' }}
+            }
+          </span>
+        </li>
+      }
+      @if (props().location) {
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5"/></svg>
+          <span>{{ props().location }}</span>
+        </li>
+      }
+    </ul>
+
+    <p class="card__text">{{ excerpt() }}</p>
+    <a class="card__link" [routerLink]="['/events', item().id]">
+      {{ 'events.details' | translate }} <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>
