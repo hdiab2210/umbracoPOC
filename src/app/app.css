@@ -46,6 +46,33 @@
   background: var(--color-primary-soft);
 }
 
+/* ---- Manage link: icon only on desktop ----------------------------------- */
+.site-nav a.nav-manage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-manage svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hide the text visually but keep it for screen readers (same as .sr-only). */
+.nav-manage__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .header-actions {
   margin-inline-start: auto; /* pushes actions to the end (right in English, left in Arabic) */
   display: flex;
@@ -152,6 +179,15 @@
 
   .site-nav {
     flex-direction: column;
+  }
+
+  /* In the mobile menu there is room: show icon + text. */
+  .nav-manage__label {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
   }
 
   .header-actions {

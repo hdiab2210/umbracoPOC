@@ -3,6 +3,7 @@ export interface Member {
   id: string;
   name: string;
   email: string;
+  roles: string[];   // ← add
 }
 
 export interface RegisterRequest {

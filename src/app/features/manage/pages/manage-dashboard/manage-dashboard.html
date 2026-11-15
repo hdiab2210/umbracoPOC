@@ -1,0 +1,192 @@
+<section class="manage-hero">
+  <div class="container manage-hero__inner">
+    <div>
+      <p class="manage-hero__eyebrow">{{ 'manage.eyebrow' | translate }}</p>
+      <h1>{{ 'manage.title' | translate }}</h1>
+      <p class="manage-hero__intro">
+        {{ (canDelete() ? 'manage.introAdmin' : 'manage.introEditor') | translate: { name: member()?.name } }}
+      </p>
+    </div>
+    @if (tab() !== 'members') {
+      <a class="btn btn--light" [routerLink]="tab() === 'news' ? '/manage/news/new' : '/manage/events/new'">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+        {{ (tab() === 'news' ? 'manage.newNews' : 'manage.newEvent') | translate }}
+      </a>
+    }
+  </div>
+</section>
+
+<section class="container section">
+  <!-- Summary cards -->
+  <div class="manage-stats">
+    <div class="manage-stat">
+      <span class="manage-stat__value">{{ news().length }}</span>
+      <span class="manage-stat__label">{{ 'manage.stats.news' | translate }}</span>
+    </div>
+    <div class="manage-stat">
+      <span class="manage-stat__value">{{ events().length }}</span>
+      <span class="manage-stat__label">{{ 'manage.stats.events' | translate }}</span>
+    </div>
+    <div class="manage-stat">
+      <span class="manage-stat__value">{{ upcomingCount() }}</span>
+      <span class="manage-stat__label">{{ 'manage.stats.upcoming' | translate }}</span>
+    </div>
+  </div>
+
+  @if (notice()) {
+    <p class="alert alert--success" role="status">{{ notice()! | translate: noticeParams() }}</p>
+  }
+  @if (error()) {
+    <p class="alert alert--error" role="alert">{{ error()! | translate }}</p>
+  }
+
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'news'" (click)="tab.set('news')">
+      {{ 'nav.news' | translate }} <span class="tabs__count">{{ news().length }}</span>
+    </button>
+    <button type="button" role="tab" [attr.aria-selected]="tab() === 'events'" (click)="tab.set('events')">
+      {{ 'nav.events' | translate }} <span class="tabs__count">{{ events().length }}</span>
+    </button>
+    <!-- Admins only (the server also refuses non-admins with 403) -->
+    @if (isAdmin()) {
+      <button type="button" role="tab" [attr.aria-selected]="tab() === 'members'" (click)="tab.set('members')">
+        {{ 'manage.membersTab' | translate }} <span class="tabs__count">{{ members().length }}</span>
+      </button>
+    }
+  </div>
+
+  @if (tab() === 'members') {
+    <!-- ================= MEMBERS (admin only) ================= -->
+    <p class="manage-help">{{ 'manage.membersHelp' | translate }}</p>
+
+    @if (membersLoading()) {
+      <div class="manage-list">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="manage-row manage-row--skeleton"><div class="skeleton"></div></div>
+        }
+      </div>
+    } @else {
+      <ul class="manage-list">
+        @for (person of members(); track person.id) {
+          <li class="manage-row">
+            <span class="member-avatar" [attr.data-role]="person.role" aria-hidden="true">{{ initials(person.name) }}</span>
+            <div class="manage-row__main">
+              <span class="manage-row__title">
+                {{ person.name }}
+                @if (person.isCurrentUser) { <span class="badge">{{ 'manage.you' | translate }}</span> }
+              </span>
+              <span class="manage-row__meta">{{ person.email }}</span>
+            </div>
+
+            @if (person.isCurrentUser) {
+              <!-- Admins can't change their own role (so the last admin can't lock everyone out). -->
+              <span class="role-pill" data-role="admin" [attr.title]="'manage.ownRole' | translate">
+                {{ 'manage.roles.admin' | translate }}
+              </span>
+            } @else {
+              <label class="role-select">
+                <span class="sr-only">{{ 'manage.roleFor' | translate: { name: person.name } }}</span>
+                <select
+                  #roleSelect
+                  [attr.data-role]="person.role"
+                  [disabled]="savingMemberId() === person.id"
+                  (change)="changeRole(person, roleSelect)"
+                >
+                  @for (role of roles; track role) {
+                    <option [value]="role" [selected]="role === person.role">{{ 'manage.roles.' + role | translate }}</option>
+                  }
+                </select>
+              </label>
+            }
+          </li>
+        } @empty {
+          <li class="manage-empty">{{ 'manage.emptyMembers' | translate }}</li>
+        }
+      </ul>
+    }
+  } @else if (loading()) {
+    <div class="manage-list">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="manage-row manage-row--skeleton"><div class="skeleton"></div></div>
+      }
+    </div>
+  } @else if (tab() === 'news') {
+    <ul class="manage-list">
+      @for (item of news(); track item.id) {
+        <li class="manage-row">
+          <div class="manage-row__thumb">
+            @if (item.properties.image?.[0]; as image) {
+              <img [src]="image.url" alt="" loading="lazy" />
+            }
+          </div>
+          <div class="manage-row__main">
+            <a class="manage-row__title" [routerLink]="['/news', item.id]">{{ item.properties.title || item.name }}</a>
+            <span class="manage-row__meta">
+              {{ 'manage.published' | translate }} · {{ item.createDate | localDate: language() : 'medium' }}
+            </span>
+          </div>
+          <div class="manage-row__actions">
+            <a class="btn btn--ghost btn--sm" [routerLink]="['/manage/news', item.id]">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z" /></svg>
+              {{ 'manage.edit' | translate }}
+            </a>
+            @if (canDelete()) {
+              <button type="button" class="btn btn--danger btn--sm" [disabled]="deletingId() === item.id" (click)="deleteNews(item)">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" /></svg>
+                {{ 'manage.delete' | translate }}
+              </button>
+            }
+          </div>
+        </li>
+      } @empty {
+        <li class="manage-empty">{{ 'manage.emptyNews' | translate }}</li>
+      }
+    </ul>
+  } @else {
+    <ul class="manage-list">
+      @for (item of events(); track item.id) {
+        <li class="manage-row">
+          <div class="manage-row__thumb">
+            @if (item.properties.image?.[0]; as image) {
+              <img [src]="image.url" alt="" loading="lazy" />
+            }
+          </div>
+          <div class="manage-row__main">
+            <a class="manage-row__title" [routerLink]="['/events', item.id]">{{ item.properties.title || item.name }}</a>
+            <span class="manage-row__meta">
+              @if (item.properties.startDate; as start) {
+                {{ start | localDate: language() : 'medium' }} · {{ start | localDate: language() : 'time' }}
+              }
+              @if (item.properties.location) { · {{ item.properties.location }} }
+            </span>
+          </div>
+          <span class="badge" [class.badge--muted]="isPast(item)">
+            {{ (isPast(item) ? 'events.past' : 'events.upcoming') | translate }}
+          </span>
+          <div class="manage-row__actions">
+            <!-- Past events are history: no Edit, only Delete (the server enforces this too). -->
+            @if (!isPast(item)) {
+              <a class="btn btn--ghost btn--sm" [routerLink]="['/manage/events', item.id]">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3a2.8 2.8 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5z" /></svg>
+                {{ 'manage.edit' | translate }}
+              </a>
+            } @else {
+              <span class="manage-locked" [attr.title]="'manage.pastLocked' | translate">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+                <span class="sr-only">{{ 'manage.pastLocked' | translate }}</span>
+              </span>
+            }
+            @if (canDelete()) {
+              <button type="button" class="btn btn--danger btn--sm" [disabled]="deletingId() === item.id" (click)="deleteEvent(item)">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14" /></svg>
+                {{ 'manage.delete' | translate }}
+              </button>
+            }
+          </div>
+        </li>
+      } @empty {
+        <li class="manage-empty">{{ 'manage.emptyEvents' | translate }}</li>
+      }
+    </ul>
+  }
+</section>

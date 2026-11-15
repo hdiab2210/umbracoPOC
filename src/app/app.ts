@@ -24,6 +24,8 @@ export class App {
   protected readonly currentLanguage = this.store.selectSignal(languageFeature.selectCurrent);
   protected readonly member = this.store.selectSignal(authFeature.selectMember);
 
+  protected readonly canManage = this.store.selectSignal(authFeature.selectCanManage);
+
   /** Mobile menu open/closed: purely local UI state, so a signal (not the store) is enough. */
   protected readonly menuOpen = signal(false);
   protected readonly year = new Date().getFullYear();

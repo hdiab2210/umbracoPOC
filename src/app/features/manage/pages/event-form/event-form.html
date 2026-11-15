@@ -1,0 +1,105 @@
+<div class="container container--narrow">
+  <header class="manage-form__head">
+    <a class="back-link" routerLink="/manage" [queryParams]="{ tab: 'events' }">{{ 'manage.back' | translate }}</a>
+    <h1>{{ (id() ? 'manage.editEvent' : 'manage.newEvent') | translate }}</h1>
+    <p>{{ 'manage.formIntro' | translate }}</p>
+  </header>
+
+  @if (error()) {
+    <p class="alert alert--error" role="alert">{{ error()! | translate }}</p>
+  }
+  @if (isPast()) {
+    <p class="alert alert--info" role="status">{{ 'manage.pastReadOnly' | translate }}</p>
+  }
+
+  @if (loading()) {
+    <div class="form-loading"><div class="skeleton"></div><div class="skeleton"></div></div>
+  } @else {
+    <form class="manage-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <!-- Title -->
+      <fieldset class="manage-card" formGroupName="title">
+        <legend>{{ 'manage.fields.title' | translate }}</legend>
+        <div class="lang-grid">
+          <label class="field">
+            <span class="field__label"><span class="lang-tag">EN</span> English *</span>
+            <input formControlName="en" dir="ltr" autocomplete="off" />
+            @if (form.controls.title.controls.en.touched && form.controls.title.controls.en.invalid) {
+              <span class="field__error">{{ 'manage.fields.required' | translate }}</span>
+            }
+          </label>
+          <label class="field">
+            <span class="field__label"><span class="lang-tag">AR</span> العربية *</span>
+            <input formControlName="ar" dir="rtl" autocomplete="off" />
+            @if (form.controls.title.controls.ar.touched && form.controls.title.controls.ar.invalid) {
+              <span class="field__error">{{ 'manage.fields.required' | translate }}</span>
+            }
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Date & time (the same in both languages) -->
+      <fieldset class="manage-card">
+        <legend>{{ 'manage.fields.when' | translate }}</legend>
+        <div class="lang-grid">
+          <label class="field">
+            <span class="field__label">{{ 'manage.fields.start' | translate }} *</span>
+            <input type="datetime-local" formControlName="startDate" />
+            @if (form.controls.startDate.touched && form.controls.startDate.invalid) {
+              <span class="field__error">{{ 'manage.fields.required' | translate }}</span>
+            }
+          </label>
+          <label class="field">
+            <span class="field__label">{{ 'manage.fields.end' | translate }}</span>
+            <input type="datetime-local" formControlName="endDate" [min]="form.controls.startDate.value" />
+            @if (form.hasError('endBeforeStart')) {
+              <span class="field__error">{{ 'manage.fields.endBeforeStart' | translate }}</span>
+            }
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Location -->
+      <fieldset class="manage-card" formGroupName="location">
+        <legend>{{ 'manage.fields.location' | translate }}</legend>
+        <div class="lang-grid">
+          <label class="field">
+            <span class="field__label"><span class="lang-tag">EN</span> English</span>
+            <input formControlName="en" dir="ltr" autocomplete="off" />
+          </label>
+          <label class="field">
+            <span class="field__label"><span class="lang-tag">AR</span> العربية</span>
+            <input formControlName="ar" dir="rtl" autocomplete="off" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Description -->
+      <fieldset class="manage-card" formGroupName="description">
+        <legend>{{ 'manage.fields.description' | translate }}</legend>
+        <div class="lang-grid">
+          <label class="field">
+            <span class="field__label"><span class="lang-tag">EN</span> English</span>
+            <textarea formControlName="en" dir="ltr" rows="8"></textarea>
+          </label>
+          <label class="field">
+            <span class="field__label"><span class="lang-tag">AR</span> العربية</span>
+            <textarea formControlName="ar" dir="rtl" rows="8"></textarea>
+          </label>
+        </div>
+        <p class="field__hint">{{ 'manage.fields.descriptionHint' | translate }}</p>
+      </fieldset>
+
+      <div class="manage-form__actions">
+        <a class="btn btn--ghost" routerLink="/manage" [queryParams]="{ tab: 'events' }">
+          {{ (isPast() ? 'manage.back' : 'manage.cancel') | translate }}
+        </a>
+        @if (!isPast()) {
+        <button type="submit" class="btn btn--primary" [disabled]="saving()">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+          {{ (saving() ? 'manage.saving' : (id() ? 'manage.saveChanges' : 'manage.publish')) | translate }}
+        </button>
+        }
+      </div>
+    </form>
+  }
+</div>

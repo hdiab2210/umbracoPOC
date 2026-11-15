@@ -9,13 +9,8 @@
       <span class="brand__name">{{ 'brand.name' | translate }}</span>
     </a>
 
-    <button
-      type="button"
-      class="menu-toggle"
-      [attr.aria-expanded]="menuOpen()"
-      aria-controls="site-menu"
-      (click)="menuOpen.set(!menuOpen())"
-    >
+    <button type="button" class="menu-toggle" [attr.aria-expanded]="menuOpen()" aria-controls="site-menu"
+      (click)="menuOpen.set(!menuOpen())">
       <span class="sr-only">{{ 'nav.menu' | translate }}</span>
       <span class="menu-toggle__bar"></span>
       <span class="menu-toggle__bar"></span>
@@ -24,34 +19,45 @@
 
     <div id="site-menu" class="site-menu" [class.site-menu--open]="menuOpen()">
       <nav class="site-nav" (click)="menuOpen.set(false)">
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'nav.home' | translate }}</a>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'nav.home' |
+          translate }}</a>
         <a routerLink="/news" routerLinkActive="active">{{ 'nav.news' | translate }}</a>
         <a routerLink="/events" routerLinkActive="active">{{ 'nav.events' | translate }}</a>
+        @if (canManage()) {
+        <a class="nav-manage" routerLink="/manage" routerLinkActive="active"
+           [attr.title]="'nav.manage' | translate">
+          <!-- "Edit document" icon: a page with a pencil -->
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" />
+            <path d="M18.4 2.6a2 2 0 0 1 2.9 2.9L13 13.8l-3.9 1 1-3.9z" />
+          </svg>
+          <!-- Text stays for screen readers, and is shown in the mobile menu -->
+          <span class="nav-manage__label">{{ 'nav.manage' | translate }}</span>
+        </a>
+        }
       </nav>
 
       <div class="header-actions">
         <span class="language-switch">
           @for (language of languages; track language.code) {
-            <button
-              type="button"
-              [class.active]="currentLanguage() === language.code"
-              [attr.aria-pressed]="currentLanguage() === language.code"
-              (click)="setLanguage(language.code)"
-            >
-              {{ language.label }}
-            </button>
+          <button type="button" [class.active]="currentLanguage() === language.code"
+            [attr.aria-pressed]="currentLanguage() === language.code" (click)="setLanguage(language.code)">
+            {{ language.label }}
+          </button>
           }
         </span>
 
         @if (member(); as member) {
-          <span class="member">
-            <span class="member__avatar" aria-hidden="true">{{ member.name.charAt(0) }}</span>
-            <span class="member__name">{{ 'auth.hello' | translate }}, {{ member.name }}</span>
-          </span>
-          <button type="button" class="btn btn--ghost btn--sm" (click)="logout()">{{ 'auth.logout' | translate }}</button>
+        <span class="member">
+          <span class="member__avatar" aria-hidden="true">{{ member.name.charAt(0) }}</span>
+          <span class="member__name">{{ 'auth.hello' | translate }}, {{ member.name }}</span>
+        </span>
+        <button type="button" class="btn btn--ghost btn--sm" (click)="logout()">{{ 'auth.logout' | translate }}</button>
         } @else {
-          <a class="btn btn--ghost btn--sm" routerLink="/login" (click)="menuOpen.set(false)">{{ 'auth.loginLink' | translate }}</a>
-          <a class="btn btn--primary btn--sm" routerLink="/signup" (click)="menuOpen.set(false)">{{ 'auth.signupLink' | translate }}</a>
+        <a class="btn btn--ghost btn--sm" routerLink="/login" (click)="menuOpen.set(false)">{{ 'auth.loginLink' |
+          translate }}</a>
+        <a class="btn btn--primary btn--sm" routerLink="/signup" (click)="menuOpen.set(false)">{{ 'auth.signupLink' |
+          translate }}</a>
         }
       </div>
     </div>

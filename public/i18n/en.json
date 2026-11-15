@@ -6,7 +6,8 @@
     "home": "Home",
     "news": "News",
     "events": "Events",
-    "menu": "Menu"
+    "menu": "Menu",
+    "manage": "Manage"
   },
   "common": {
     "loading": "Loading…",
@@ -75,5 +76,69 @@
     "nameRequired": "Please enter your name.",
     "emailInvalid": "Please enter a valid email.",
     "passwordRule": "Password must be at least 10 characters."
+  },
+  "manage": {
+    "eyebrow": "Editor workspace",
+    "title": "Manage content",
+    "stats": {
+      "news": "News articles",
+      "events": "Events",
+      "upcoming": "Upcoming events"
+    },
+    "newNews": "New news",
+    "editNews": "Edit news",
+    "newEvent": "New event",
+    "editEvent": "Edit event",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "back": "← Back to manage",
+    "publish": "Publish",
+    "saveChanges": "Save changes",
+    "saving": "Saving…",
+    "published": "Published",
+    "formIntro": "Fill in both English and Arabic. Saving publishes the item on the website immediately.",
+    "emptyNews": "No news yet. Create the first one!",
+    "emptyEvents": "No events yet. Create the first one!",
+    "confirmDelete": "Delete \"{{title}}\"? It will be moved to the Umbraco recycle bin.",
+    "created": "Created and published.",
+    "updated": "Changes saved and published.",
+    "deleted": "Moved to the recycle bin.",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "location": "Location",
+      "when": "Date & time",
+      "start": "Starts",
+      "end": "Ends",
+      "required": "This field is required.",
+      "endBeforeStart": "The end must be after the start.",
+      "descriptionHint": "Plain text. Leave an empty line between paragraphs."
+    },
+    "errors": {
+      "notLoggedIn": "Your session has expired. Please log in again.",
+      "forbidden": "You do not have permission to do this.",
+      "notFound": "This item no longer exists.",
+      "generic": "Something went wrong. Please try again.",
+      "pastEvent": "Past events cannot be edited.",
+      "ownRole": "You cannot change your own role."
+    },
+    "introAdmin": "Welcome {{name}}. You can create, edit and delete news and events.",
+    "introEditor": "Welcome {{name}}. You can create and edit news and events. Only admins can delete.",
+    "pastLocked": "Past event: editing is closed",
+    "pastReadOnly": "This event has already ended. Past events cannot be edited.",
+    "membersTab": "Members",
+    "membersHelp": "Choose a role for each account. The change applies the next time that person loads the site.",
+    "you": "You",
+    "ownRole": "You cannot change your own role.",
+    "roleFor": "Role for {{name}}",
+    "emptyMembers": "No members yet.",
+    "roles": {
+      "member": "Member",
+      "editor": "Editor",
+      "admin": "Admin"
+    },
+    "confirmMakeAdmin": "Make {{name}} an admin? Admins can delete content and change everyone's role.",
+    "roleChanged": "{{name}} is now {{role}}."
   }
 }

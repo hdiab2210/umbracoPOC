@@ -1,0 +1,172 @@
+/* Shared by the news form and the event form. */
+
+:host {
+  display: block;
+  padding-block: 2.5rem 4rem;
+}
+
+svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.manage-form__head {
+  margin-block-end: 1.75rem;
+}
+
+.manage-form__head h1 {
+  margin: 0.5rem 0 0.25rem;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+
+.manage-form__head p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.manage-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* One card per field group (Title, Description, ...) */
+.manage-card {
+  margin: 0;
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.manage-card legend {
+  float: left; /* puts the legend inside the card instead of on its border */
+  width: 100%;
+  margin-block-end: 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.manage-card legend + * {
+  clear: both;
+}
+
+/* English | Arabic side by side on wide screens */
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field__label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.lang-tag {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-page);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field textarea {
+  min-height: 9rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 4px var(--color-primary-soft);
+}
+
+/* Red border only after the user has touched the field (or pressed Save) */
+.field .ng-invalid.ng-touched {
+  border-color: var(--color-error);
+}
+
+.field__error {
+  color: var(--color-error);
+  font-size: 0.8rem;
+}
+
+.field__hint {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+/* Arabic inputs use the Arabic font */
+[dir='rtl'] {
+  font-family: var(--font-arabic);
+}
+
+/* Save / Cancel bar sticks to the bottom while scrolling long forms */
+.manage-form__actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  background: linear-gradient(to top, var(--color-page) 70%, transparent);
+}
+
+.manage-form__actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.alert--info {
+  margin-block-end: 1.25rem;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+/* Read-only (past event) inputs */
+.field input:disabled,
+.field textarea:disabled {
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.form-loading .skeleton {
+  height: 160px;
+  margin-block-end: 1.25rem;
+  border-radius: var(--radius-lg);
+}

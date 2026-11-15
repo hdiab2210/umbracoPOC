@@ -21,6 +21,17 @@ export const AUTH_ENDPOINTS = {
   me: '/api/auth/me',
 } as const;
 
+/** Our own content management controller in Umbraco (ContentManageController). */
+export const MANAGE_ENDPOINTS = {
+  news: '/api/manage/news',
+  newsItem: (id: string) => `/api/manage/news/${id}`,
+  events: '/api/manage/events',
+  eventItem: (id: string) => `/api/manage/events/${id}`,
+  /** Admin only (MemberRolesController). */
+  members: '/api/manage/members',
+  memberRole: (id: string) => `/api/manage/members/${id}/role`,
+} as const;
+
 /** Umbraco content type aliases used in queries. */
 export const CONTENT_TYPES = {
   home: 'home',

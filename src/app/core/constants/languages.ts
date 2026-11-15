@@ -3,7 +3,7 @@ export type Language = 'en' | 'ar';
 
 export interface LanguageOption {
   code: Language;
-  label: string;          // shown on the switcher button
+  label: string;          // appear on the switcher button
   umbracoCulture: string; // EXACT culture code from Umbraco → Settings → Languages
   dir: 'ltr' | 'rtl';     // text direction  
 }

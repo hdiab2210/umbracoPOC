@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { managerGuard } from './core/guards/manager.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -13,6 +15,12 @@ export const routes: Routes = [
   {
     path: 'events',
     loadChildren: () => import('./features/events/events.routes').then((m) => m.EVENTS_ROUTES),
+  },
+  {
+    // Only for Content Editors / Content Admins (the guard redirects everyone else to Home).
+    path: 'manage',
+    canActivate: [managerGuard],
+    loadChildren: () => import('./features/manage/manage.routes').then((m) => m.MANAGE_ROUTES),
   },
   {
     path: '',
